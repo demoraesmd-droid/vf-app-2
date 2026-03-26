@@ -21,6 +21,9 @@ GRID READING METHOD for 10-2 (68 points):
 - Row 10 (bottom): 2 points (cols 5-6) — DO NOT SKIP
 Total = 2+6+8+8+10+10+8+8+6+2 = 68 points
 
+GRID READING METHOD for 24-2 (54 points):
+- 8 rows of varying width in a diamond shape within a 9-column grid
+
 Return this exact JSON structure:
 {
   "patient_info": {
@@ -38,6 +41,7 @@ Return this exact JSON structure:
   "total_deviation": [{"x": 1, "y": 1, "value": 0}],
   "pattern_deviation": [{"x": 1, "y": 1, "value": 0}]
 }
+
 x = column (1=leftmost), y = row (1=topmost). Only include positions with actual values.`
 
 export async function POST(request) {

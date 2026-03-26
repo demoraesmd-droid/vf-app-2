@@ -92,7 +92,7 @@ function ThresholdGrid({ points }) {
     return `rgb(${Math.round(14 + 211 * n)},${Math.round(158 + 97 * n)},${Math.round(117 + 138 * n)})`
   }
   return (
-    <div className="overflow-x-auto mt-3">
+    <div style={{ overflowX: 'auto', marginTop: 12 }}>
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
           {Array.from({ length: maxY }, (_, yi) => (
@@ -116,13 +116,13 @@ function ResultCard({ result }) {
   const gi = result.data?.global_indices || {}
   const points = result.data?.threshold_values?.length || 0
   return (
-    <div className={`rounded-xl border overflow-hidden ${isError ? 'border-red-300 bg-red-50' : 'border-teal-600 bg-white'}`}>
-      <div className="px-4 py-3 flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <p className="font-mono text-sm font-semibold mb-1 truncate">{isError ? '❌' : '✅'} {result.filename}</p>
+    <div style={{ border: `1px solid ${isError ? '#fca5a5' : '#0f6e56'}`, borderRadius: 12, overflow: 'hidden', background: isError ? '#fef2f2' : 'white', marginBottom: 12 }}>
+      <div style={{ padding: '12px 16px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 13, fontWeight: 600, marginBottom: 4, margin: '0 0 4px' }}>{isError ? '❌' : '✅'} {result.filename}</p>
           {isError
-            ? <p className="text-xs text-red-700">{result.error}</p>
-            : <div className="flex flex-wrap gap-3 text-xs text-slate-500">
+            ? <p style={{ fontSize: 12, color: '#b91c1c', margin: 0 }}>{result.error}</p>
+            : <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 12, color: '#64748b' }}>
                 {pi.eye && <span><b>Eye:</b> {pi.eye}</span>}
                 {pi.test_type && <span><b>Type:</b> {pi.test_type}</span>}
                 {pi.test_date && <span><b>Date:</b> {pi.test_date}</span>}
@@ -131,30 +131,30 @@ function ResultCard({ result }) {
                 <span><b>Points:</b> {points}</span>
               </div>}
         </div>
-        {!isError && <button onClick={() => setExpanded(e => !e)} className="shrink-0 text-xs border border-teal-600 text-teal-700 rounded-md px-3 py-1 hover:bg-teal-50">{expanded ? 'Hide' : 'Preview'}</button>}
+        {!isError && <button onClick={() => setExpanded(e => !e)} style={{ flexShrink: 0, fontSize: 12, border: '1px solid #0f6e56', color: '#085041', background: 'none', borderRadius: 6, padding: '4px 12px', cursor: 'pointer' }}>{expanded ? 'Hide' : 'Preview'}</button>}
       </div>
       {expanded && !isError && (
-        <div className="border-t border-teal-200 bg-teal-50 px-4 py-4">
-          <div className="grid grid-cols-2 gap-6 mb-4">
+        <div style={{ borderTop: '1px solid #99f6e4', background: '#f0fdf9', padding: '14px 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
             <div>
-              <p className="text-xs font-bold text-teal-800 uppercase tracking-wide mb-2">Patient Info</p>
-              <table className="text-xs w-full"><tbody>
+              <p style={{ fontSize: 11, fontWeight: 700, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8, margin: '0 0 8px' }}>Patient Info</p>
+              <table style={{ fontSize: 12, width: '100%' }}><tbody>
                 {[['Name', pi.name], ['ID', pi.id], ['DOB', pi.date_of_birth], ['VA', pi.visual_acuity], ['Pupil', pi.pupil_diameter], ['Rx', pi.rx_used], ['Strategy', pi.strategy], ['Duration', pi.test_duration], ['Fix. Losses', pi.fixation_losses], ['False Pos', pi.false_pos_errors], ['False Neg', pi.false_neg_errors]].filter(([, v]) => v).map(([k, v]) => (
-                  <tr key={k}><td className="text-slate-500 pr-3 py-0.5 whitespace-nowrap">{k}</td><td className="font-medium">{v}</td></tr>
+                  <tr key={k}><td style={{ color: '#94a3b8', paddingRight: 8, paddingBottom: 2, whiteSpace: 'nowrap' }}>{k}</td><td style={{ fontWeight: 500 }}>{v}</td></tr>
                 ))}
               </tbody></table>
             </div>
             <div>
-              <p className="text-xs font-bold text-teal-800 uppercase tracking-wide mb-2">Global Indices</p>
-              <table className="text-xs w-full"><tbody>
+              <p style={{ fontSize: 11, fontWeight: 700, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8, margin: '0 0 8px' }}>Global Indices</p>
+              <table style={{ fontSize: 12, width: '100%' }}><tbody>
                 {[['MD', gi.MD ? `${gi.MD} (p${gi.MD_p || '?'})` : ''], ['PSD', gi.PSD ? `${gi.PSD} (p${gi.PSD_p || '?'})` : ''], ['VFI', gi.VFI], ['GHT', gi.GHT]].filter(([, v]) => v).map(([k, v]) => (
-                  <tr key={k}><td className="text-slate-500 pr-3 py-0.5">{k}</td><td className="font-medium text-red-700">{v}</td></tr>
+                  <tr key={k}><td style={{ color: '#94a3b8', paddingRight: 8, paddingBottom: 2 }}>{k}</td><td style={{ fontWeight: 500, color: '#b91c1c' }}>{v}</td></tr>
                 ))}
               </tbody></table>
             </div>
           </div>
           {result.data.threshold_values?.length > 0 && <>
-            <p className="text-xs font-bold text-teal-800 uppercase tracking-wide mb-1">Threshold Grid ({points} points)</p>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px' }}>Threshold Grid ({points} points)</p>
             <ThresholdGrid points={result.data.threshold_values} />
           </>}
         </div>
@@ -223,78 +223,91 @@ export default function Home() {
   const successCount = results.filter(r => !r.error && r.data.patient_info).length
   const errorCount = results.filter(r => r.error).length
 
+  const S = {
+    wrap: { minHeight: '100vh', background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif' },
+    header: { background: 'white', borderBottom: '1px solid #e2e8f0', padding: '16px 24px' },
+    headerInner: { maxWidth: 720, margin: '0 auto' },
+    title: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 },
+    h1: { fontSize: 22, fontWeight: 700, color: '#0f172a', margin: 0 },
+    badge: { fontSize: 12, fontFamily: 'monospace', background: '#ccfbf1', color: '#065f46', border: '1px solid #6ee7b7', padding: '2px 10px', borderRadius: 20 },
+    subtitle: { fontSize: 14, color: '#64748b', margin: 0 },
+    main: { maxWidth: 720, margin: '0 auto', padding: '32px 24px' },
+    dropzone: (active) => ({ border: `2px dashed ${active ? '#10b981' : '#cbd5e1'}`, borderRadius: 12, padding: '48px 24px', textAlign: 'center', cursor: 'pointer', background: active ? '#f0fdf9' : 'white', transition: 'all 0.2s', marginBottom: 20 }),
+    dropIcon: { fontSize: 40, marginBottom: 12 },
+    dropTitle: { fontSize: 16, fontWeight: 600, color: '#334155', margin: '0 0 4px' },
+    dropSub: { fontSize: 13, color: '#94a3b8', margin: 0 },
+    fileRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'white', border: '1px solid #e2e8f0', borderRadius: 8, padding: '8px 12px', marginBottom: 6 },
+    btnPrimary: (disabled) => ({ padding: '10px 20px', borderRadius: 8, fontWeight: 600, fontSize: 14, color: 'white', background: disabled ? '#94a3b8' : '#0f6e56', border: 'none', cursor: disabled ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }),
+    btnBlue: { padding: '10px 20px', borderRadius: 8, fontWeight: 600, fontSize: 14, color: 'white', background: '#2563eb', border: 'none', cursor: 'pointer' },
+    btnGhost: { padding: '10px 16px', borderRadius: 8, fontWeight: 600, fontSize: 14, color: '#64748b', background: 'none', border: '1px solid #cbd5e1', cursor: 'pointer' },
+    progress: { background: '#f0fdf9', border: '1px solid #6ee7b7', borderRadius: 8, padding: '12px 16px', marginBottom: 16 },
+    progressBar: { background: 'white', borderRadius: 4, height: 6, overflow: 'hidden', marginTop: 8 },
+    progressFill: (pct) => ({ width: `${pct}%`, background: '#10b981', height: '100%', transition: 'width 0.3s' }),
+    error: { background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#b91c1c', marginBottom: 16 },
+    sectionLabel: { fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 12 },
+    footer: { fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 32 },
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 px-6 py-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-slate-800">Visual Field Extractor</h1>
-            <span className="text-xs font-mono bg-teal-100 text-teal-800 border border-teal-300 px-2 py-0.5 rounded-full">24-2 · 10-2</span>
+    <div style={S.wrap}>
+      <header style={S.header}>
+        <div style={S.headerInner}>
+          <div style={S.title}>
+            <h1 style={S.h1}>Visual Field Extractor</h1>
+            <span style={S.badge}>24-2 · 10-2</span>
           </div>
-          <p className="text-sm text-slate-500 mt-0.5">Upload Humphrey Visual Field images → extract all data → download Excel</p>
+          <p style={S.subtitle}>Upload Humphrey Visual Field images → extract all data → download Excel</p>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-5">
-        <div onDrop={onDrop} onDragOver={e => e.preventDefault()} onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all ${files.length ? 'border-teal-500 bg-teal-50' : 'border-slate-300 bg-white hover:border-teal-400 hover:bg-teal-50'}`}>
-          <input ref={fileInputRef} type="file" accept="image/jpeg,image/jpg,image/png" multiple onChange={onDrop} className="hidden" />
-          <div className="text-4xl mb-3">📁</div>
-          <p className="font-semibold text-slate-700">Drop images here or click to browse</p>
-          <p className="text-sm text-slate-400 mt-1">JPEG or PNG · 24-2 and 10-2 Humphrey VF reports</p>
+      <main style={S.main}>
+        <div style={S.dropzone(files.length > 0)} onDrop={onDrop} onDragOver={e => e.preventDefault()} onClick={() => fileInputRef.current?.click()}>
+          <input ref={fileInputRef} type="file" accept="image/jpeg,image/jpg,image/png" multiple onChange={onDrop} style={{ display: 'none' }} />
+          <div style={S.dropIcon}>📁</div>
+          <p style={S.dropTitle}>Drop images here or click to browse</p>
+          <p style={S.dropSub}>JPEG or PNG · 24-2 and 10-2 Humphrey VF reports</p>
         </div>
 
         {files.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">{files.length} file{files.length > 1 ? 's' : ''} queued</p>
+          <div style={{ marginBottom: 20 }}>
+            <p style={S.sectionLabel}>{files.length} file{files.length > 1 ? 's' : ''} queued</p>
             {files.map(f => (
-              <div key={f.name} className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-2">
-                <span className="font-mono text-sm text-slate-700 truncate">{f.name}</span>
-                <div className="flex items-center gap-3 ml-3 shrink-0">
-                  <span className="text-xs text-slate-400">{(f.size / 1024).toFixed(0)} KB</span>
-                  <button onClick={() => setFiles(p => p.filter(x => x.name !== f.name))} className="text-slate-400 hover:text-red-500 text-lg leading-none">✕</button>
+              <div key={f.name} style={S.fileRow}>
+                <span style={{ fontFamily: 'monospace', fontSize: 13, color: '#334155' }}>{f.name}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ fontSize: 12, color: '#94a3b8' }}>{(f.size / 1024).toFixed(0)} KB</span>
+                  <button onClick={() => setFiles(p => p.filter(x => x.name !== f.name))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: 18, lineHeight: 1, padding: 0 }}>✕</button>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        <div className="flex flex-wrap gap-3">
-          <button onClick={processAll} disabled={!files.length || processing}
-            className={`px-5 py-2.5 rounded-lg font-semibold text-sm text-white transition-colors ${files.length && !processing ? 'bg-teal-600 hover:bg-teal-700' : 'bg-slate-300 cursor-not-allowed'}`}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 20 }}>
+          <button onClick={processAll} disabled={!files.length || processing} style={S.btnPrimary(!files.length || processing)}>
             {processing ? `Processing ${progress.current}/${progress.total}…` : `Extract Data (${files.length} file${files.length !== 1 ? 's' : ''})`}
           </button>
-          {successCount > 0 && (
-            <button onClick={downloadExcel} className="px-5 py-2.5 rounded-lg font-semibold text-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
-              ⬇ Download Excel ({successCount} sheet{successCount !== 1 ? 's' : ''})
-            </button>
-          )}
-          {files.length > 0 && (
-            <button onClick={() => { setFiles([]); setResults([]); setError('') }} className="px-4 py-2.5 rounded-lg font-semibold text-sm text-slate-500 border border-slate-300 hover:bg-slate-100 transition-colors">
-              Clear all
-            </button>
-          )}
+          {successCount > 0 && <button onClick={downloadExcel} style={S.btnBlue}>⬇ Download Excel ({successCount} sheet{successCount !== 1 ? 's' : ''})</button>}
+          {files.length > 0 && <button onClick={() => { setFiles([]); setResults([]); setError('') }} style={S.btnGhost}>Clear all</button>}
         </div>
 
         {processing && (
-          <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3">
-            <p className="text-sm text-teal-800 mb-2">{progress.status}</p>
-            <div className="bg-white rounded-full h-2 overflow-hidden">
-              <div className="bg-teal-500 h-full transition-all duration-300" style={{ width: `${(progress.current / progress.total) * 100}%` }} />
-            </div>
+          <div style={S.progress}>
+            <p style={{ fontSize: 13, color: '#065f46', margin: 0 }}>{progress.status}</p>
+            <div style={S.progressBar}><div style={S.progressFill((progress.current / progress.total) * 100)} /></div>
           </div>
         )}
 
-        {error && <div className="bg-red-50 border border-red-300 rounded-lg px-4 py-3 text-sm text-red-800">{error}</div>}
+        {error && <div style={S.error}>{error}</div>}
 
         {results.length > 0 && (
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-3">Results — {successCount} extracted, {errorCount} failed</p>
-            <div className="space-y-3">{results.map((r, i) => <ResultCard key={i} result={r} />)}</div>
+            <p style={S.sectionLabel}>Results — {successCount} extracted, {errorCount} failed</p>
+            {results.map((r, i) => <ResultCard key={i} result={r} />)}
           </div>
         )}
 
-        <p className="text-xs text-center text-slate-400 pt-4">Powered by Claude AI · Data processed securely and not stored</p>
+        <p style={S.footer}>Powered by Claude AI · Data processed securely and not stored</p>
       </main>
     </div>
   )
